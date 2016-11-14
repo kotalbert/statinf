@@ -1,3 +1,4 @@
+
 # Sample probability distributions
 
 # Binominal
@@ -8,6 +9,7 @@ pbinom(6, size=8, prob=.5, lower.tail=F)
 1 - pbinom(6, size=8, prob=.5)
 
 # Normal
+# Quantiles for probabilities
 qnorm(.025)
 qnorm(.05)
 qnorm(.1)
@@ -15,4 +17,11 @@ qnorm(.9)
 qnorm(.95)
 qnorm(.975)
 
+# Scaling normal distribution
+# Z=(X-mu)/sigma
+
 # Poisson
+
+ppois(3, lambda=2.5*4)
+pbinom(2, size=500, prob=0.01)
+ppois(2, lambda=500*0.01)
