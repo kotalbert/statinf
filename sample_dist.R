@@ -15,4 +15,11 @@ qnorm(.9)
 qnorm(.95)
 qnorm(.975)
 
+# Scaling normal distribution
+# Z=(X-mu)/sigma
+
 # Poisson
+
+ppois(3, lambda=2.5*4)
+pbinom(2, size=500, prob=0.01)
+ppois(2, lambda=500*0.01)
