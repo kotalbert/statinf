@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Confidence intervals
 
 # Independant group t confidence intervals
@@ -22,6 +23,8 @@ t.test(dif)$conf.int
 # Y^-X^ +/- t_{df}*sqrt(sx^2/nx +sy^2/ny)
 
 =======
+=======
+>>>>>>> refs/remotes/origin/master
 # Confidence intervals excercises
 
 # e4, p.84
@@ -61,4 +64,7 @@ m <- mean(mpg4) - mean(mpg6)
 sp <- sqrt (((n4-1)*var(mpg4)+(n6-1)*var(mpg6))/ (n4 + n6 -2)) * sqrt(1/n4+1/n6)
 m + c(-1,1)*qt(.975,n4+n6-2)*sp
 
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
