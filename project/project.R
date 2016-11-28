@@ -22,7 +22,7 @@ x <- matrix(rexp(nsim*obs, lbd), ncol=obs)
 mean(x)
 sd(x)
 
-hist(x)
+hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribution", breaks=60)
 
 # Calculate mean for each sample
 y <- apply(x, 1, mean)

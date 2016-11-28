@@ -12,9 +12,9 @@ options(scipen=999)
 
 ## Summary
 
-This report is a final assignment of Statistical Inference Course Project. The report was written using **knitr** package.The demonstrated plots were drawn using **ggplot2** package. 
+This report is a final assignment of Statistical Inference Course Project. The report was written using **knitr** package.The demonstrated plots were drawn using **base** plotting system. 
 
-The report is divided into two parts. First part covers the demonstration of simulation of exponentially distributed random variable, and then applying Central Limit Theorem to investigate the distribution of sample mean of the exponential distribution.
+The report is divided into two parts. First part covers the demonstration of simulation of exponentially distributed random variable, and then applying [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) to investigate the distribution of sample mean of the exponential distribution.
 
 Second part of the report is dedicated t inferential analysis of `ToothGrowth` data set. 
 
@@ -58,51 +58,52 @@ The random values were saved in matrix.
 For the purpose of the exercise, `r nsim` random samples were generated, each containing `r obs` observations. 
 Total number of generated random numbers is `r nsim * obs`. The generated random numbers were saved as matrix, in order to facilitate calculation of sample means. 
 
-The following histogram displays the empirical distribution of randomly generated exponentials.
+The following histogram displays the empirical distribution of randomly generated exponentials. The break widths are set to be equal to 1. The red vertival line indicates the distribution mean. It can be noted, that the exponential distribution is not symetrical, therefore, values are not obviously centered around mean value.
 
 ```{r emp_hist}
-hist(x)
+hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribution", breaks=60)
+abline(v=5, lw=2, col="red")
 ```
 
-The empirical mean and standard deviation for the data set were calculated as follows:
+Further investigation of empirical statistics indicates, that both empirical mean(m) and standard deviation(s) are close to theoretical values of $\mu$ and $\sigma$ of the Exponential Distribution.
+The sample statistics are calculated as follows:
 
 m=`r mean(x)`
 
 s=`r sd(x)`
 
-It appears, that empirical mean and standard deviation for large random sample are close to the theoretical values of $\mu$ and $\sigma$.
 
 ### Sample mean distribution 
 
 In order to investigate the distribution of sample mean distribution, each for each random sample, empirical mean was calculated. The resulting data was a vector of `r nsim` elements.
 
+Using `apply` function allows to calculate required statistics over matrix dimensions. In this case, the **mean** function is calculated over matrix **x** rows, i.e. mean is calculated for each of random samples.
+
+The following histogram illustrates the distribution of random sample means. 
+
+```{r means}
+# Calculate the samples means
+sm <- apply(x, 1, mean)
+hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means", breaks=9)
+abline(v=5, lw=2, col="red")
+```
+
+According to Central Limit Theorem, the distribution of mean of random samples, follow Normal distribution with mean $\mu_s=\mu$ and standard deviation $\sigma_s = \sigma/\sqrt(n)$.
+
+Since `r obs` random variables were generated in each sample, under this assumptions we expect the sample mean and standard deviation to be as follows:
+
+$\mu_s = 1/\lambda=5$
+
+$\sigma_s = \frac{1}{\lambda * \sqrt(n)} = \frac{1}{0.2 * \sqrt(40)} = 0.7906$
+
+Indeed, the calculated results are confirming the expectations. Empirical mean and standard deviation are as follows:
+
+$m=`r mean(sm)`$
+
+$s = `r sd(sm)`$
+
+The theoretical and empirical results are closely matched.
 
 ## Part 2: Inferential Data Analysis
 
 
-
-
-
-
-
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
