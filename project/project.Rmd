@@ -1,4 +1,4 @@
----
+--
 title: "Statistical Inference Course Project"
 author: "Pawel Daniluk"
 date: "2016-11-28"
@@ -7,7 +7,85 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(scipen=999)
 ```
+
+## Summary
+
+This report is a final assignment of Statistical Inference Course Project. The report was written using **knitr** package.The demonstrated plots were drawn using **ggplot2** package. 
+
+The report is divided into two parts. First part covers the demonstration of simulation of exponentially distributed random variable, and then applying Central Limit Theorem to investigate the distribution of sample mean of the exponential distribution.
+
+Second part of the report is dedicated t inferential analysis of `ToothGrowth` data set. 
+
+`TODO: finish summary for part 2`
+
+## Part 1: Exponential Distribution Simulation
+
+The first exponential random variable simulation is to generate large volume of random data. 
+First, the random seed will be set, to ensure reproducible results. The random data is grouped in samples, 40 observation per sample.
+
+The Exponential distribution is probability distribution that describes the time between events in a Poisson process, as described in [Wikipedia](https://en.wikipedia.org/wiki/Exponential_distribution).
+
+### Generating random data
+
+The Exponential distribution is described with a parameter $\lambda$. 
+In the course project, $\lambda$ parameter is set to be 0.2.
+The theoretical mean and standard deviation are equal and given as follows:
+
+$\mu=1/\lambda=1/0.2=5$
+
+$\sigma=1/\lambda=1/0.2=5$
+
+```{r sim}
+# set random seed
+set.seed(123456)
+
+# total number of random samples
+nsim <- 10000
+
+# number of random observation per sample
+obs <- 40
+
+# lambda parameter for distribution
+lbd = 0.2
+
+# simulate random numbers
+x <- matrix(rexp(nsim*obs, lbd), ncol=obs)
+```
+
+The random values were saved in matrix. 
+For the purpose of the exercise, `r nsim` random samples were generated, each containing `r obs` observations. 
+Total number of generated random numbers is `r nsim * obs`. The generated random numbers were saved as matrix, in order to facilitate calculation of sample means. 
+
+The following histogram displays the empirical distribution of randomly generated exponentials.
+
+```{r emp_hist}
+hist(x)
+```
+
+The empirical mean and standard deviation for the data set were calculated as follows:
+
+m=`r mean(x)`
+
+s=`r sd(x)`
+
+It appears, that empirical mean and standard deviation for large random sample are close to the theoretical values of $\mu$ and $\sigma$.
+
+### Sample mean distribution 
+
+In order to investigate the distribution of sample mean distribution, each for each random sample, empirical mean was calculated. The resulting data was a vector of `r nsim` elements.
+
+
+## Part 2: Inferential Data Analysis
+
+
+
+
+
+
+
+
 
 ## R Markdown
 
