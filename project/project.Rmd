@@ -1,8 +1,10 @@
---
+---
 title: "Statistical Inference Course Project"
 author: "Pawel Daniluk"
 date: "2016-11-28"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -12,13 +14,15 @@ options(scipen=999)
 
 ## Summary
 
-This report is a final assignment of Statistical Inference Course Project. The report was written using **knitr** package.The demonstrated plots were drawn using **base** plotting system. 
+This report is a final assignment of Statistical Inference Course Project. The report was written using `knitr`  package. The demonstrated plots were drawn using `base` plotting system for simplicity and reproducibility.. 
+
+This report was written with [Vim](http://www.vim.org/), using [Nvim-R](http://www.vim.org/scripts/script.php?script_id=2628) plugin under Debian Linux. RMarkdown and Markdown files can be found in the [github](https://github.com/polde-live/statinf) repository.
 
 The report is divided into two parts. First part covers the demonstration of simulation of exponentially distributed random variable, and then applying [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) to investigate the distribution of sample mean of the exponential distribution.
 
-Second part of the report is dedicated t inferential analysis of `ToothGrowth` data set. 
+Second part of the report is dedicated t inferential analysis of `ToothGrowth` data set, which is included as a  standard `R` data set, available in any installation. The basic exploratory analysis of the data set is performed, followed by the inference analysis of differences between mean teeth growth over different groups in data set. 
 
-`TODO: finish summary for part 2`
+It was demonstrated, that some observable differences in sample mean may not be statistically significant under given conditions.
 
 ## Part 1: Exponential Distribution Simulation
 
@@ -30,9 +34,10 @@ The Exponential distribution is described with a parameter $\lambda$.
 In the course project, $\lambda$ parameter is set to be 0.2.
 The theoretical mean and standard deviation are equal and given as follows:
 
-$\mu=1/\lambda=1/0.2=5$
+$\mu=\frac{1}{\lambda}=5$
 
-$\sigma=1/\lambda=1/0.2=5$
+
+$\sigma=\frac{1}{\lambda}=5$
 
 First exponential random variable simulation is to generate large volume of random data. 
 First, the random seed will be set, to ensure reproducible results. The random data is grouped in samples, 40 observation per sample.
@@ -59,21 +64,24 @@ The random values were saved in matrix.
 For the purpose of the exercise, `r nsim` random samples were generated, each containing `r obs` observations. 
 Total number of generated random numbers is `r nsim * obs`. The generated random numbers were saved as matrix, in order to facilitate calculation of sample means. 
 
-The following histogram displays the empirical distribution of randomly generated exponentials. The break widths are set to be equal to 1. The red vertival line indicates the distribution mean. It can be noted, that the exponential distribution is not symetrical, therefore, values are not obviously centered around mean value.
+The following histogram displays the empirical distribution of randomly generated exponentials. The break widths are set to be equal to 1. The red vertical line indicates the distribution mean. It can be noted, that the exponential distribution is not symmetrical, therefore, values are not obviously centered around mean value.
 
 ```{r emp_hist}
-hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribution", breaks=60)
+# Plot histogram of Exponentials with vertical line at mean
+hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribution"
+    , xlab="Random value"
+    , xlim=range(0:30)
+    , breaks=60)
 abline(v=5, lw=2, col="red")
 ```
 
-Furthenr investigation of empirical statistics indicates, that both empirical mean(m) and standard deviation(s) are close to theoretical values of $\mu$ and $\sigma$ of the Exponential Distribution.
+Further investigation of empirical statistics indicates, that both empirical mean(m) and standard deviation(s) are close to theoretical values of $\mu$ and $\sigma$ of the Exponential Distribution.
 The sample statistics are calculated as follows:
 
-m=`r mean(x)`
+$m=`r mean(x)`$
 
-s=`r sd(x)`
+$s=`r sd(x)`$
 
-Finally, 
 
 ### Sample mean distribution 
 
@@ -86,30 +94,36 @@ The following histogram illustrates the distribution of random sample means.
 ```{r means}
 # Calculate the samples means
 sm <- apply(x, 1, mean)
-hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means", breaks=9)
+hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means"
+     , breaks=9
+     , xlim=range(2:9)
+     , xlab="Sample mean")
 abline(v=5, lw=2, col="red")
 ```
 
-According to Central Limit Theorem, the distribution of mean of random samples, follow Normal distribution with mean $\mu_s=\mu$ and standard deviation $\sigma_s = \sigma/\sqrt(n)$.
+According to Central Limit Theorem, the distribution of mean of random samples, follow Normal distribution with mean $\mu_s=\mu$ and standard deviation $\sigma_s = \frac{\sigma}{\sqrt(n)}$.
 
 Since `r obs` random variables were generated in each sample.Let $_s$ denote sample mean parameters. Ujjjr this assumptions we expect the sample mean and standard deviation to be as follows:
 
 
-$\mu_s = 1/\lambda=5$
+$\mu_s = 1/\lambda = 5$
 
-$\sigma_s = \frac{1}{\lambda * \sqrt(n)} = \frac{1}{0.2 * \sqrt(40)} = 0.7906$
+$\sigma_s = \frac{1}{\lambda \times \sqrt(n)} = \frac{1}{0.2 \times \sqrt(40)} \approx 0.7906$
 
 Indeed, the calculated results are confirming the expectations. Empirical mean and standard deviation are as follows:
 
-$m=`r mean(sm)`$
+$m_s =`r mean(sm)`$
 
-$s = `r sd(sm)`$
+$s_s = `r sd(sm)`$
 
 The theoretical and empirical results are closely matched. Finally, Normal distribution density plot is  overlayer over histogram of sample means. As expected, histogram and density plot are matching are close to each other. This confirms out expectations under CLT.
 
 ```{r ovrl}
 # Draw histogram
-hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means", breaks=9)
+hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means"
+     , breaks=9
+     , xlim=range(2:9)  
+     , xlab="Sample mean")
 
 # Overlay normal density plot N(m,s)
 xfit <- seq(min(sm), max(sm), length=100)
@@ -125,15 +139,101 @@ The second part of the report covers inferential analysis of `ToothGrowth` datas
 
 The `ToothGrowthi` dataset describes the Effect of Vitamin C on Tooth Growth in Guinea Pigs. The [detailed description](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.html) can be found in the `R` documentation.
 
-There are 60 observations and three variables:
+The data set contains 60 observations and three variables:
 
-    1. **len**  Tooth length 
-    2. **supp** Supplement type (Ascorbic Acid or Orange Juice)
-    3. **dose** Dose in mg/day 
+1. **len**  Tooth length 
+2. **supp** Supplement type (Ascorbic Acid or Orange Juice)
+3. **dose** Dose in mg/day 
 
 ### Exploratory analysis
 
+As first stage of exploratory analysis, the **len** variable will be described. Statistics will be calculated for whole sample and in groups.
 
-### Statistical inference
+```{r dd}
+# Short names for variables
+len <- ToothGrowth$len
+sup <- ToothGrowth$supp
+dose <- ToothGrowth$dose
+```
+
+First, the histogram of analysis variable is plotted.  The data follows no apparent probability distribution, which can be explained by relatively sample size.
+```{r}
+hist(len, col="lightblue", main="Histogram of tooth length")
+```
+The mean and basic moments can be displayed with `summary` function. The box-whiskers plot is used to visualise moments of the sample. 
+```{r}
+summary(len)
+```
+Similar tool set can be used to analyze the `len` variable in groups. First, the `sup` groups are compared.
+In order to calculate summary statistics in each groups, `tapply` function can by used.
+
+It appears, that there is a difference in medians and means between both groups. 
+
+```{r}
+tapply(len, sup, summary)
+boxplot(len~sup, col="lightblue", xlab="Supplement")
+```
+
+Similarly, `dose` variable can be used for grouping the data. It appears, that as in case of `sup` groups, the there are differences in mean and median. 
+
+```{r}
+tapply(len, dose, summary)
+boxplot(len~dose, col="lightblue", xlab="Dose")
+```
+
+Although differences of means betweens groups can be observed in sample, statistical significance of the differences needs to be verified in a formal manner. Since the sample size is small, the t-test seems to be appropriate tool.
+
+### Interference analysis
+
+First, means in two supplement groups will be compared, using two sided t-test. Since the observations are not paired, sample need to be divided into groups for each levels of `sup` variable. First, the test hypotheses needs to be formulated.
+
+$H_0: \mu_a = \mu_b$
+
+$H_1: \mu_a \neq \mu_b$
+
+```{r sup_grp}
+soj <- len[sup=="OJ"]
+svc <- len[sup=="VC"]
+tsup <- t.test(soj, svc, alternative="two.sided")
+print(tsup)
+```
+
+The calculated t-statistic for this test is `r tsup$statistic`, with p-value `r tsup$p.value`. Since calculated p-value is greater than confidence level of 5%, there are no statistical conditions to reject Null hypothesis. The calculated p-value is however close to critical level of 5%, which in suggests, that repeating the test or collecting additional observation might bear more definitive results.
+
+As a final step of the analysis, to investigate the statistical significance of difference of means in dose groups. Similarly as before, sample is divided into groups. Each group is then compared with other, in order to draw concussions.  
+
+```{r dos_grp}
+d05 <- len[dose==0.5]
+d1 <- len[dose==1]
+d2 <- len[dose==2]
+```
+
+For each test, two sided hypotheses are formulated:
+
+$H_0: \mu_a = \mu_b$
+
+$H_1: \mu_a \neq \mu_b$
 
 
+```{r t1}
+t1 <- t.test(d05, d1, alternative="two.sided")
+print(t1)
+```
+
+The comparison of two groups with dosage of 0.5 and 1 mg/day yields t-statistic of `r t1$statistic`, with p-value of `r t1$p.value`. This result lead to rejecting Null hypothesis in favour of alternative - therefore the difference of means if those two groups is statistically significant. 
+
+```{r t2}
+t2 <- t.test(d05, d2, alternative="two.sided")
+print(t2)
+```
+
+The comparison of two groups with dosage of 0.5 and 2 mg/day yields t-statistic of `r t2$statistic`, with p-value of `r t2$p.value`. This result lead to rejecting Null hypothesis in favour of alternative - therefore the difference of means if those two groups is statistically significant. 
+
+```{r t3}
+t3 <- t.test(d1, d2, alternative="two.sided")
+print(t3)
+```
+
+The comparison of two groups with dosage of 1 and 2 mg/day yields t-statistic of `r t3$statistic`, with p-value of `r t3$p.value`. This result lead to rejecting Null hypothesis in favour of alternative - therefore the difference of means if those two groups is statistically significant. 
+
+The final conclusion from the inference analysis is that the effect of supplement type on the teeth growth is statistically insignificant, while the observed data suggest that difference in dosage of supplement has a statistically significant effect.
