@@ -22,11 +22,28 @@ x <- matrix(rexp(nsim*obs, lbd), ncol=obs)
 mean(x)
 sd(x)
 
+# Draw empirical distribution
 hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribution", breaks=60)
+abline(v=5, lw=2, col="red")
 
-# Calculate mean for each sample
-y <- apply(x, 1, mean)
-hist(y)
-mean(y)
-sd(y)
+# Calculate the samples means
+sm <- apply(x, 1, mean)
+hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means", breaks=9)
+abline(v=5, lw=2, col="red")
 
+# ToothGrowth 
+head(ToothGrowth)
+len <- ToothGrowth$len
+sup <- ToothGrowth$supp
+dos <- ToothGrowth$dose
+
+# lenght vs sup
+boxplot(l~sup)
+tapply(l, sup, summary)
+
+# length vs dose
+boxplot(l~dos)
+tapply(l, dos, summary)
+
+summary(dos)
+dev.off()

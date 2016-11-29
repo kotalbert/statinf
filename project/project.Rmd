@@ -22,10 +22,7 @@ Second part of the report is dedicated t inferential analysis of `ToothGrowth` d
 
 ## Part 1: Exponential Distribution Simulation
 
-The first exponential random variable simulation is to generate large volume of random data. 
-First, the random seed will be set, to ensure reproducible results. The random data is grouped in samples, 40 observation per sample.
-
-The Exponential distribution is probability distribution that describes the time between events in a Poisson process, as described in [Wikipedia](https://en.wikipedia.org/wiki/Exponential_distribution).
+First part of the project focuses on the simulation of large set of random data. After random data is generated, the theoretical and empirical distribution are compared. Finally, the random data is grouped into series of random samples. The distribution of random sample mean is them examined if it adheres to Central Limit Theorem assumptions.
 
 ### Generating random data
 
@@ -36,6 +33,10 @@ The theoretical mean and standard deviation are equal and given as follows:
 $\mu=1/\lambda=1/0.2=5$
 
 $\sigma=1/\lambda=1/0.2=5$
+
+First exponential random variable simulation is to generate large volume of random data. 
+First, the random seed will be set, to ensure reproducible results. The random data is grouped in samples, 40 observation per sample.
+The Exponential distribution is probability distribution that describes the time between events in a Poisson process, as described in [Wikipedia](https://en.wikipedia.org/wiki/Exponential_distribution).
 
 ```{r sim}
 # set random seed
@@ -65,13 +66,14 @@ hist(x, col="lightblue", freq=F, main="Histogram of Exponential Random Distribut
 abline(v=5, lw=2, col="red")
 ```
 
-Further investigation of empirical statistics indicates, that both empirical mean(m) and standard deviation(s) are close to theoretical values of $\mu$ and $\sigma$ of the Exponential Distribution.
+Furthenr investigation of empirical statistics indicates, that both empirical mean(m) and standard deviation(s) are close to theoretical values of $\mu$ and $\sigma$ of the Exponential Distribution.
 The sample statistics are calculated as follows:
 
 m=`r mean(x)`
 
 s=`r sd(x)`
 
+Finally, 
 
 ### Sample mean distribution 
 
@@ -90,7 +92,8 @@ abline(v=5, lw=2, col="red")
 
 According to Central Limit Theorem, the distribution of mean of random samples, follow Normal distribution with mean $\mu_s=\mu$ and standard deviation $\sigma_s = \sigma/\sqrt(n)$.
 
-Since `r obs` random variables were generated in each sample, under this assumptions we expect the sample mean and standard deviation to be as follows:
+Since `r obs` random variables were generated in each sample.Let $_s$ denote sample mean parameters. Ujjjr this assumptions we expect the sample mean and standard deviation to be as follows:
+
 
 $\mu_s = 1/\lambda=5$
 
@@ -102,8 +105,35 @@ $m=`r mean(sm)`$
 
 $s = `r sd(sm)`$
 
-The theoretical and empirical results are closely matched.
+The theoretical and empirical results are closely matched. Finally, Normal distribution density plot is  overlayer over histogram of sample means. As expected, histogram and density plot are matching are close to each other. This confirms out expectations under CLT.
+
+```{r ovrl}
+# Draw histogram
+hist(sm, col="lightblue", freq=F, main="Histogram of Sample Means", breaks=9)
+
+# Overlay normal density plot N(m,s)
+xfit <- seq(min(sm), max(sm), length=100)
+yfit <- dnorm(xfit, mean=mean(sm), sd=sd(sm))
+lines(xfit, yfit, col="red", lwd=2)
+```
 
 ## Part 2: Inferential Data Analysis
+
+The second part of the report covers inferential analysis of `ToothGrowth` dataset. First, basic exploratory data analysis will be performed. Then, tooth growth will be compared by **supp** and **dose** attributes, using t-test techniques.  
+
+### Date description
+
+The `ToothGrowthi` dataset describes the Effect of Vitamin C on Tooth Growth in Guinea Pigs. The [detailed description](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.html) can be found in the `R` documentation.
+
+There are 60 observations and three variables:
+
+    1. **len**  Tooth length 
+    2. **supp** Supplement type (Ascorbic Acid or Orange Juice)
+    3. **dose** Dose in mg/day 
+
+### Exploratory analysis
+
+
+### Statistical inference
 
 
